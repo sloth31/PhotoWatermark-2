@@ -1,0 +1,546 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		B29AF60C2E868BE200C4AD4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B29AF5F52E868BDF00C4AD4B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B29AF5FC2E868BDF00C4AD4B;
+			remoteInfo = PhotoWatermark;
+		};
+		B29AF6162E868BE200C4AD4B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B29AF5F52E868BDF00C4AD4B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B29AF5FC2E868BDF00C4AD4B;
+			remoteInfo = PhotoWatermark;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B29AF5FD2E868BDF00C4AD4B /* PhotoWatermark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoWatermark.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B29AF60B2E868BE200C4AD4B /* PhotoWatermarkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoWatermarkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B29AF6152E868BE200C4AD4B /* PhotoWatermarkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoWatermarkUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		B29AF5FF2E868BDF00C4AD4B /* PhotoWatermark */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PhotoWatermark;
+			sourceTree = "<group>";
+		};
+		B29AF60E2E868BE200C4AD4B /* PhotoWatermarkTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PhotoWatermarkTests;
+			sourceTree = "<group>";
+		};
+		B29AF6182E868BE200C4AD4B /* PhotoWatermarkUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PhotoWatermarkUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B29AF5FA2E868BDF00C4AD4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6082E868BE200C4AD4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6122E868BE200C4AD4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B29AF5F42E868BDF00C4AD4B = {
+			isa = PBXGroup;
+			children = (
+				B29AF5FF2E868BDF00C4AD4B /* PhotoWatermark */,
+				B29AF60E2E868BE200C4AD4B /* PhotoWatermarkTests */,
+				B29AF6182E868BE200C4AD4B /* PhotoWatermarkUITests */,
+				B29AF5FE2E868BDF00C4AD4B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B29AF5FE2E868BDF00C4AD4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B29AF5FD2E868BDF00C4AD4B /* PhotoWatermark.app */,
+				B29AF60B2E868BE200C4AD4B /* PhotoWatermarkTests.xctest */,
+				B29AF6152E868BE200C4AD4B /* PhotoWatermarkUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B29AF5FC2E868BDF00C4AD4B /* PhotoWatermark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B29AF61F2E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermark" */;
+			buildPhases = (
+				B29AF5F92E868BDF00C4AD4B /* Sources */,
+				B29AF5FA2E868BDF00C4AD4B /* Frameworks */,
+				B29AF5FB2E868BDF00C4AD4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B29AF5FF2E868BDF00C4AD4B /* PhotoWatermark */,
+			);
+			name = PhotoWatermark;
+			packageProductDependencies = (
+			);
+			productName = PhotoWatermark;
+			productReference = B29AF5FD2E868BDF00C4AD4B /* PhotoWatermark.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B29AF60A2E868BE200C4AD4B /* PhotoWatermarkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B29AF6222E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermarkTests" */;
+			buildPhases = (
+				B29AF6072E868BE200C4AD4B /* Sources */,
+				B29AF6082E868BE200C4AD4B /* Frameworks */,
+				B29AF6092E868BE200C4AD4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B29AF60D2E868BE200C4AD4B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B29AF60E2E868BE200C4AD4B /* PhotoWatermarkTests */,
+			);
+			name = PhotoWatermarkTests;
+			packageProductDependencies = (
+			);
+			productName = PhotoWatermarkTests;
+			productReference = B29AF60B2E868BE200C4AD4B /* PhotoWatermarkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B29AF6142E868BE200C4AD4B /* PhotoWatermarkUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B29AF6252E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermarkUITests" */;
+			buildPhases = (
+				B29AF6112E868BE200C4AD4B /* Sources */,
+				B29AF6122E868BE200C4AD4B /* Frameworks */,
+				B29AF6132E868BE200C4AD4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B29AF6172E868BE200C4AD4B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B29AF6182E868BE200C4AD4B /* PhotoWatermarkUITests */,
+			);
+			name = PhotoWatermarkUITests;
+			packageProductDependencies = (
+			);
+			productName = PhotoWatermarkUITests;
+			productReference = B29AF6152E868BE200C4AD4B /* PhotoWatermarkUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B29AF5F52E868BDF00C4AD4B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					B29AF5FC2E868BDF00C4AD4B = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					B29AF60A2E868BE200C4AD4B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = B29AF5FC2E868BDF00C4AD4B;
+					};
+					B29AF6142E868BE200C4AD4B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = B29AF5FC2E868BDF00C4AD4B;
+					};
+				};
+			};
+			buildConfigurationList = B29AF5F82E868BDF00C4AD4B /* Build configuration list for PBXProject "PhotoWatermark" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B29AF5F42E868BDF00C4AD4B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B29AF5FE2E868BDF00C4AD4B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B29AF5FC2E868BDF00C4AD4B /* PhotoWatermark */,
+				B29AF60A2E868BE200C4AD4B /* PhotoWatermarkTests */,
+				B29AF6142E868BE200C4AD4B /* PhotoWatermarkUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B29AF5FB2E868BDF00C4AD4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6092E868BE200C4AD4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6132E868BE200C4AD4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B29AF5F92E868BDF00C4AD4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6072E868BE200C4AD4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29AF6112E868BE200C4AD4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B29AF60D2E868BE200C4AD4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B29AF5FC2E868BDF00C4AD4B /* PhotoWatermark */;
+			targetProxy = B29AF60C2E868BE200C4AD4B /* PBXContainerItemProxy */;
+		};
+		B29AF6172E868BE200C4AD4B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B29AF5FC2E868BDF00C4AD4B /* PhotoWatermark */;
+			targetProxy = B29AF6162E868BE200C4AD4B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		B29AF61D2E868BE200C4AD4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B29AF61E2E868BE200C4AD4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		B29AF6202E868BE200C4AD4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PhotoWatermark/PhotoWatermark.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermark;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B29AF6212E868BE200C4AD4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PhotoWatermark/PhotoWatermark.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermark;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B29AF6232E868BE200C4AD4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermarkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoWatermark.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PhotoWatermark";
+			};
+			name = Debug;
+		};
+		B29AF6242E868BE200C4AD4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermarkTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PhotoWatermark.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PhotoWatermark";
+			};
+			name = Release;
+		};
+		B29AF6262E868BE200C4AD4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermarkUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PhotoWatermark;
+			};
+			name = Debug;
+		};
+		B29AF6272E868BE200C4AD4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = sloth.PhotoWatermarkUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PhotoWatermark;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B29AF5F82E868BDF00C4AD4B /* Build configuration list for PBXProject "PhotoWatermark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B29AF61D2E868BE200C4AD4B /* Debug */,
+				B29AF61E2E868BE200C4AD4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B29AF61F2E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B29AF6202E868BE200C4AD4B /* Debug */,
+				B29AF6212E868BE200C4AD4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B29AF6222E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermarkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B29AF6232E868BE200C4AD4B /* Debug */,
+				B29AF6242E868BE200C4AD4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B29AF6252E868BE200C4AD4B /* Build configuration list for PBXNativeTarget "PhotoWatermarkUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B29AF6262E868BE200C4AD4B /* Debug */,
+				B29AF6272E868BE200C4AD4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B29AF5F52E868BDF00C4AD4B /* Project object */;
+}
