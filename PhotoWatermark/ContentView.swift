@@ -45,6 +45,15 @@ struct WatermarkSettings: Codable, Equatable {
     var fontSize: CGFloat = 48
     var textColor: CodableColor = CodableColor(color: .white)
     var textOpacity: Double = 0.5
+
+    // Text style properties
+   var isBold: Bool = false
+   var isItalic: Bool = false
+
+   // Text stroke properties
+   var hasStroke: Bool = false
+   var strokeColor: CodableColor = CodableColor(color: .black)
+   var strokeWidth: CGFloat = 2
     
     // Image watermark properties
     var imageData: Data? = nil // Store image as Data to be Codable
@@ -305,28 +314,56 @@ private var leftPanel: some View {
                         Image(nsImage: nsImage).resizable().aspectRatio(contentMode: .fit).padding().onDisappear { selectedURL.stopAccessingSecurityScopedResource() }
                     } else { Text("无法加载图片") }
                 } else { VStack { Text("请从左侧选择图片或拖拽图片到此处").font(.title).foregroundColor(.secondary) } }
-                if selectedImageURL != nil {
-                    if settings.watermarkType == .text {
+               if selectedImageURL != nil {
+                if settings.watermarkType == .text {
+                    // 使用 ZStack 来实现描边效果
+                    ZStack {
+                        // 描边层 (在底层)
+                        if settings.hasStroke {
+                            Text(settings.text)
+                                .strikethrough(false) // Workaround to apply stroke in SwiftUI
+                                .font(.custom(settings.fontName, size: settings.fontSize))
+                                .fontWeight(settings.isBold ? .bold : .regular)
+                                .italic(settings.isItalic)
+                                .foregroundStyle(settings.strokeColor.color)
+                                .overlay(
+                                    // The actual text on top
+                                    Text(settings.text)
+                                        .font(.custom(settings.fontName, size: settings.fontSize))
+                                        .fontWeight(settings.isBold ? .bold : .regular)
+                                        .italic(settings.isItalic)
+                                        .foregroundColor(settings.textColor.color)
+                                        .opacity(settings.textOpacity)
+                                )
+                                // A simple way to control stroke width in preview
+                                .scaleEffect(1 + (settings.strokeWidth / settings.fontSize))
+                        }
+                     
+                        // 主要文字层 (如果无描边，则只显示这一层)
                         Text(settings.text)
                             .font(.custom(settings.fontName, size: settings.fontSize))
+                            .fontWeight(settings.isBold ? .bold : .regular)
+                            .italic(settings.isItalic)
                             .foregroundColor(settings.textColor.color)
                             .opacity(settings.textOpacity)
                             .shadow(color: .black.opacity(0.6), radius: 4, x: 2, y: 2)
-                            .padding()
-                            .offset(x: settings.position.width + dragOffset.width, y: settings.position.height + dragOffset.height)
-                            .gesture(dragGesture())
-                    } else if let image = watermarkImage {
-                        Image(nsImage: image)
-                            .resizable().aspectRatio(contentMode: .fit)
-                            .frame(width: image.size.width * settings.imageScale)
-                            .opacity(settings.imageOpacity)
-                            .offset(x: settings.position.width + dragOffset.width, y: settings.position.height + dragOffset.height)
-                            .gesture(dragGesture())
                     }
-                    PositionGridView(watermarkPosition: $settings.position) { alignment in setWatermarkPosition(alignment) }
-                        .frame(width: 180).padding(12).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12)).padding()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                    .padding()
+                    .offset(x: settings.position.width + dragOffset.width, y: settings.position.height + dragOffset.height)
+                    .gesture(dragGesture())
+                    
+                } else if let image = watermarkImage {
+                    Image(nsImage: image)
+                        .resizable().aspectRatio(contentMode: .fit)
+                        .frame(width: image.size.width * settings.imageScale)
+                        .opacity(settings.imageOpacity)
+                        .offset(x: settings.position.width + dragOffset.width, y: settings.position.height + dragOffset.height)
+                        .gesture(dragGesture())
                 }
+                PositionGridView(watermarkPosition: $settings.position) { alignment in setWatermarkPosition(alignment) }
+                    .frame(width: 180).padding(12).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12)).padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+              }
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -375,16 +412,23 @@ private var templateManagement: some View {
     }
 }
 
-    private var watermarkSettings: some View {
-        VStack(spacing: 20) {
-            Text("水印设置").font(.title2).bold()
-            Picker("水印类型", selection: $settings.watermarkType) {
-                ForEach(WatermarkType.allCases) { type in Text(type.rawValue).tag(type) }
-            }.pickerStyle(.segmented).padding(.bottom, 10)
-            if settings.watermarkType == .text {
-                Form {
+
+private var watermarkSettings: some View {
+    VStack(spacing: 20) {
+        Text("水印设置").font(.title2).bold()
+        Picker("水印类型", selection: $settings.watermarkType) {
+            ForEach(WatermarkType.allCases) { type in Text(type.rawValue).tag(type) }
+        }.pickerStyle(.segmented).padding(.bottom, 10)
+
+        if settings.watermarkType == .text {
+            Form {
+                Section(header: Text("内容")) {
                     TextField("水印文字:", text: $settings.text)
                     ColorPicker("颜色:", selection: Binding(get: { settings.textColor.color }, set: { settings.textColor = CodableColor(color: $0) }))
+                    Slider(value: $settings.textOpacity, in: 0...1) { Text("透明度:") }
+                }
+                
+                Section(header: Text("字体")) {
                     Picker("字体:", selection: $settings.fontName) {
                         ForEach(availableFonts, id: \.self) { Text($0).tag($0) }
                     }
@@ -393,24 +437,40 @@ private var templateManagement: some View {
                         TextField("", value: $settings.fontSize, formatter: NumberFormatter()).frame(width: 50)
                         Stepper("", value: $settings.fontSize, in: 8...288)
                     }
-                    Slider(value: $settings.textOpacity, in: 0...1) { Text("透明度:") }
+                    // --- 新增的 Toggle ---
+                    Toggle("粗体", isOn: $settings.isBold)
+                    Toggle("斜体", isOn: $settings.isItalic)
                 }
-            } else {
-                VStack {
-                    if let image = watermarkImage {
-                        Image(nsImage: image).resizable().aspectRatio(contentMode: .fit).frame(height: 60)
-                            .padding(8).background(Color.black.opacity(0.2)).cornerRadius(8)
-                        Text(image.name() ?? "已选择图片").font(.caption).lineLimit(1).truncationMode(.middle)
-                    } else { Text("未选择水印图片").foregroundColor(.secondary).frame(height: 60) }
-                    Button(action: openImageWatermarkPicker) { Label("选择图片...", systemImage: "photo") }.padding(.bottom)
-                    Form {
-                        Slider(value: $settings.imageScale, in: 0.05...1.0) { Text("缩放:") }
-                        Slider(value: $settings.imageOpacity, in: 0...1) { Text("透明度:") }
+
+                // --- 新增的 Section ---
+                Section(header: Text("描边 (可选)")) {
+                    Toggle("启用描边", isOn: $settings.hasStroke)
+                    if settings.hasStroke {
+                        ColorPicker("描边颜色:", selection: Binding(get: { settings.strokeColor.color }, set: { settings.strokeColor = CodableColor(color: $0) }))
+                        HStack {
+                            Text("描边宽度:")
+                            Slider(value: $settings.strokeWidth, in: 1...20)
+                        }
                     }
+                }
+            }
+        } else {
+            // ... (图片水印设置部分保持不变)
+            VStack {
+                if let image = watermarkImage {
+                    Image(nsImage: image).resizable().aspectRatio(contentMode: .fit).frame(height: 60)
+                        .padding(8).background(Color.black.opacity(0.2)).cornerRadius(8)
+                    Text(image.name() ?? "已选择图片").font(.caption).lineLimit(1).truncationMode(.middle)
+                } else { Text("未选择水印图片").foregroundColor(.secondary).frame(height: 60) }
+                Button(action: openImageWatermarkPicker) { Label("选择图片...", systemImage: "photo") }.padding(.bottom)
+                Form {
+                    Slider(value: $settings.imageScale, in: 0.05...1.0) { Text("缩放:") }
+                    Slider(value: $settings.imageOpacity, in: 0...1) { Text("透明度:") }
                 }
             }
         }
     }
+}
 
     // MARK: - Helper Functions
     private func saveCurrentSettingsAsTemplate() {
@@ -673,45 +733,24 @@ struct ExportSettingsView: View {
     }
     
 
+
 @MainActor
 private func renderWatermarkedImage(for image: NSImage) -> NSImage {
+    // ... (图片缩放和画布创建逻辑保持不变)
     guard let originalCGImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return image }
     let originalSize = image.size
-
-    // --- 1. 计算最终输出尺寸 ---
     let outputSize: CGSize
     switch scaleMode {
-    case .none:
-        outputSize = originalSize
-    case .byWidth:
-        let newWidth = CGFloat(scaleValue)
-        let newHeight = (newWidth / originalSize.width) * originalSize.height
-        outputSize = CGSize(width: newWidth, height: newHeight)
-    case .byHeight:
-        let newHeight = CGFloat(scaleValue)
-        let newWidth = (newHeight / originalSize.height) * originalSize.width
-        outputSize = CGSize(width: newWidth, height: newHeight)
-    case .byPercentage:
-        let factor = CGFloat(scaleValue) / 100.0
-        outputSize = CGSize(width: originalSize.width * factor, height: originalSize.height * factor)
+    case .none: outputSize = originalSize
+    case .byWidth: let newWidth = CGFloat(scaleValue); let newHeight = (newWidth / originalSize.width) * originalSize.height; outputSize = CGSize(width: newWidth, height: newHeight)
+    case .byHeight: let newHeight = CGFloat(scaleValue); let newWidth = (newHeight / originalSize.height) * originalSize.width; outputSize = CGSize(width: newWidth, height: newHeight)
+    case .byPercentage: let factor = CGFloat(scaleValue) / 100.0; outputSize = CGSize(width: originalSize.width * factor, height: originalSize.height * factor)
     }
-
-    // --- 2. 创建一个基于最终尺寸的画布 ---
-    guard let context = CGContext(
-        data: nil, width: Int(outputSize.width), height: Int(outputSize.height),
-        bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(),
-        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
-    ) else { return image }
-
-    // --- 3. 将 (可能被缩放的) 原始图片绘制到新画布上 ---
+    guard let context = CGContext(data: nil, width: Int(outputSize.width), height: Int(outputSize.height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return image }
     context.draw(originalCGImage, in: CGRect(origin: .zero, size: outputSize))
-
-    // --- 后续的水印逻辑大部分保持不变，但需要使用新的 outputSize ---
     let nsGraphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = nsGraphicsContext
-
-    // The scale factor for watermark elements is now based on the ratio of the OUTPUT image to the PREVIEW image.
     let imageAspectRatio = outputSize.width / outputSize.height
     let previewAspectRatio = previewSize.width / previewSize.height
     var renderRect = CGRect(origin: .zero, size: previewSize)
@@ -724,35 +763,53 @@ private func renderWatermarkedImage(for image: NSImage) -> NSImage {
     }
     let scale = outputSize.width / renderRect.width
 
+    // --- 从这里开始替换 ---
     if settings.watermarkType == .text {
-        // (文字水印的绘制逻辑不变)
-        let scaledFontSize = settings.fontSize * scale
-        guard let scaledFont = NSFont(name: settings.fontName, size: scaledFontSize) else {
+        // 1. 根据 isBold 和 isItalic 获取正确的字体
+        let fontManager = NSFontManager.shared
+        var fontTraits: NSFontTraitMask = []
+        if settings.isBold { fontTraits.insert(.boldFontMask) }
+        if settings.isItalic { fontTraits.insert(.italicFontMask) }
+        
+        guard let baseFont = NSFont(name: settings.fontName, size: settings.fontSize * scale),
+              let finalFont = fontManager.font(withFamily: baseFont.familyName ?? settings.fontName, traits: fontTraits, weight: 5, size: settings.fontSize * scale) else {
             NSGraphicsContext.restoreGraphicsState(); return image
         }
+        
+        // 2. 构建 NSAttributedString 的属性字典
         let shadow = NSShadow()
         shadow.shadowColor = NSColor.black.withAlphaComponent(0.6)
         shadow.shadowOffset = NSSize(width: 2 * scale, height: 2 * scale)
         shadow.shadowBlurRadius = 4 * scale
-        let attributes: [NSAttributedString.Key: Any] = [.font: scaledFont, .foregroundColor: NSColor(settings.textColor.color).withAlphaComponent(settings.textOpacity), .shadow: shadow]
+        
+        var attributes: [NSAttributedString.Key: Any] = [
+            .font: finalFont,
+            .foregroundColor: NSColor(settings.textColor.color).withAlphaComponent(settings.textOpacity),
+            .shadow: shadow
+        ]
+        
+        // 3. 如果启用了描边，添加描边属性
+        if settings.hasStroke {
+            // 使用负值可以让描边和填充同时存在
+            attributes[.strokeWidth] = -(settings.strokeWidth * scale)
+            attributes[.strokeColor] = NSColor(settings.strokeColor.color)
+        }
+        
         let watermarkString = NSAttributedString(string: settings.text, attributes: attributes)
         let watermarkSize = watermarkString.size()
         let drawPoint = CGPoint(x: (outputSize.width - watermarkSize.width) / 2 + settings.position.width * scale, y: (outputSize.height - watermarkSize.height) / 2 - settings.position.height * scale)
         watermarkString.draw(at: drawPoint)
         
     } else if let imageData = settings.imageData, let watermarkImage = NSImage(data: imageData) {
-        // (图片水印的绘制逻辑不变, 但基于 outputSize)
+        // (图片水印逻辑不变)
         let scaledWatermarkSize = CGSize(width: watermarkImage.size.width * settings.imageScale * scale, height: watermarkImage.size.height * settings.imageScale * scale)
         let drawRect = CGRect(x: (outputSize.width - scaledWatermarkSize.width) / 2 + settings.position.width * scale, y: (outputSize.height - scaledWatermarkSize.height) / 2 - settings.position.height * scale, width: scaledWatermarkSize.width, height: scaledWatermarkSize.height)
         watermarkImage.draw(in: drawRect, from: .zero, operation: .sourceOver, fraction: settings.imageOpacity)
     }
+    // --- 替换结束 ---
 
     NSGraphicsContext.restoreGraphicsState()
-    
-    // --- 4. 从新画布生成最终图片 ---
     guard let watermarkedCGImage = context.makeImage() else { return image }
-    
-    // 返回尺寸为 outputSize 的新 NSImage
     return NSImage(cgImage: watermarkedCGImage, size: outputSize)
 }
     
