@@ -70,7 +70,7 @@
 - **操作系统**: macOS 15.5
 - **硬件架构**: Apple Silicon (arm64)
 
-理论上支持运行 macOS 15.0 及以上版本的 Apple Silicon Mac 设备。
+理论上支持运行 macOS 14.6 及以上版本的 Apple Silicon Mac 设备。
 
 ## 📄 开源许可
 
