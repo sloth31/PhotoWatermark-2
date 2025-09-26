@@ -133,6 +133,13 @@ enum ExportFormat: String, CaseIterable, Identifiable {
     case png = "PNG", jpeg = "JPEG"; var id: Self { self }
 }
 
+enum ScaleMode: String, CaseIterable, Identifiable {
+    case none = "原始尺寸"
+    case byWidth = "按宽度"
+    case byHeight = "按高度"
+    case byPercentage = "按百分比"
+    var id: Self { self }
+}
 
 // MARK: - Main Content View
 struct ContentView: View {
@@ -556,6 +563,8 @@ struct ExportSettingsView: View {
     @State private var customSuffix: String = "_watermarked"
     @State private var jpegQuality: Double = 0.8
     @State private var isExporting = false
+    @State private var scaleMode: ScaleMode = .none
+    @State private var scaleValue: Int = 100
     
     private var exportButtonText: String {
         switch exportScope {
@@ -580,6 +589,29 @@ struct ExportSettingsView: View {
                     if namingRule == .addPrefix { TextField("前缀:", text: $customPrefix) }
                     if namingRule == .addSuffix { TextField("后缀:", text: $customSuffix) }
                 }
+                  Section(header: Text("图片尺寸 (可选)")) {
+                     Picker("缩放模式:", selection: $scaleMode) {
+                        ForEach(ScaleMode.allCases) { mode in
+                              Text(mode.rawValue).tag(mode)
+                        }
+                     }
+                     
+                     if scaleMode != .none {
+                        HStack {
+                              if scaleMode == .byPercentage {
+                                 Text("百分比:")
+                                 TextField("", value: $scaleValue, formatter: NumberFormatter())
+                                    .multilineTextAlignment(.trailing)
+                                 Text("%")
+                              } else {
+                                 Text(scaleMode == .byWidth ? "宽度:" : "高度:")
+                                 TextField("", value: $scaleValue, formatter: NumberFormatter())
+                                    .multilineTextAlignment(.trailing)
+                                 Text("px")
+                              }
+                        }
+                     }
+                  }
             }
             Spacer()
             if isExporting { ProgressView("正在导出...").padding() }
@@ -640,49 +672,89 @@ struct ExportSettingsView: View {
         }
     }
     
-    @MainActor
-    private func renderWatermarkedImage(for image: NSImage) -> NSImage {
-        guard let originalCGImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return image }
-        let imageSize = image.size
-        guard let context = CGContext(data: nil, width: Int(imageSize.width), height: Int(imageSize.height), bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return image }
-        context.draw(originalCGImage, in: CGRect(origin: .zero, size: imageSize))
-        let nsGraphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
-        NSGraphicsContext.saveGraphicsState()
-        NSGraphicsContext.current = nsGraphicsContext
-        let imageAspectRatio = imageSize.width / imageSize.height
-        let previewAspectRatio = previewSize.width / previewSize.height
-        var renderRect = CGRect(origin: .zero, size: previewSize)
-        if imageAspectRatio > previewAspectRatio {
-            renderRect.size.height = previewSize.width / imageAspectRatio
-            renderRect.origin.y = (previewSize.height - renderRect.size.height) / 2
-        } else {
-            renderRect.size.width = previewSize.height * imageAspectRatio
-            renderRect.origin.x = (previewSize.width - renderRect.size.width) / 2
-        }
-        let scale = imageSize.width / renderRect.width
-        if settings.watermarkType == .text {
-            let scaledFontSize = settings.fontSize * scale
-            guard let scaledFont = NSFont(name: settings.fontName, size: scaledFontSize) else {
-                NSGraphicsContext.restoreGraphicsState(); return image
-            }
-            let shadow = NSShadow()
-            shadow.shadowColor = NSColor.black.withAlphaComponent(0.6)
-            shadow.shadowOffset = NSSize(width: 2 * scale, height: 2 * scale)
-            shadow.shadowBlurRadius = 4 * scale
-            let attributes: [NSAttributedString.Key: Any] = [.font: scaledFont, .foregroundColor: NSColor(settings.textColor.color).withAlphaComponent(settings.textOpacity), .shadow: shadow]
-            let watermarkString = NSAttributedString(string: settings.text, attributes: attributes)
-            let watermarkSize = watermarkString.size()
-            let drawPoint = CGPoint(x: (imageSize.width - watermarkSize.width) / 2 + settings.position.width * scale, y: (imageSize.height - watermarkSize.height) / 2 - settings.position.height * scale)
-            watermarkString.draw(at: drawPoint)
-        } else if let imageData = settings.imageData, let watermarkImage = NSImage(data: imageData) {
-            let scaledWatermarkSize = CGSize(width: watermarkImage.size.width * settings.imageScale * scale, height: watermarkImage.size.height * settings.imageScale * scale)
-            let drawRect = CGRect(x: (imageSize.width - scaledWatermarkSize.width) / 2 + settings.position.width * scale, y: (imageSize.height - scaledWatermarkSize.height) / 2 - settings.position.height * scale, width: scaledWatermarkSize.width, height: scaledWatermarkSize.height)
-            watermarkImage.draw(in: drawRect, from: .zero, operation: .sourceOver, fraction: settings.imageOpacity)
-        }
-        NSGraphicsContext.restoreGraphicsState()
-        guard let watermarkedCGImage = context.makeImage() else { return image }
-        return NSImage(cgImage: watermarkedCGImage, size: imageSize)
+
+@MainActor
+private func renderWatermarkedImage(for image: NSImage) -> NSImage {
+    guard let originalCGImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return image }
+    let originalSize = image.size
+
+    // --- 1. 计算最终输出尺寸 ---
+    let outputSize: CGSize
+    switch scaleMode {
+    case .none:
+        outputSize = originalSize
+    case .byWidth:
+        let newWidth = CGFloat(scaleValue)
+        let newHeight = (newWidth / originalSize.width) * originalSize.height
+        outputSize = CGSize(width: newWidth, height: newHeight)
+    case .byHeight:
+        let newHeight = CGFloat(scaleValue)
+        let newWidth = (newHeight / originalSize.height) * originalSize.width
+        outputSize = CGSize(width: newWidth, height: newHeight)
+    case .byPercentage:
+        let factor = CGFloat(scaleValue) / 100.0
+        outputSize = CGSize(width: originalSize.width * factor, height: originalSize.height * factor)
     }
+
+    // --- 2. 创建一个基于最终尺寸的画布 ---
+    guard let context = CGContext(
+        data: nil, width: Int(outputSize.width), height: Int(outputSize.height),
+        bitsPerComponent: 8, bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(),
+        bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+    ) else { return image }
+
+    // --- 3. 将 (可能被缩放的) 原始图片绘制到新画布上 ---
+    context.draw(originalCGImage, in: CGRect(origin: .zero, size: outputSize))
+
+    // --- 后续的水印逻辑大部分保持不变，但需要使用新的 outputSize ---
+    let nsGraphicsContext = NSGraphicsContext(cgContext: context, flipped: false)
+    NSGraphicsContext.saveGraphicsState()
+    NSGraphicsContext.current = nsGraphicsContext
+
+    // The scale factor for watermark elements is now based on the ratio of the OUTPUT image to the PREVIEW image.
+    let imageAspectRatio = outputSize.width / outputSize.height
+    let previewAspectRatio = previewSize.width / previewSize.height
+    var renderRect = CGRect(origin: .zero, size: previewSize)
+    if imageAspectRatio > previewAspectRatio {
+        renderRect.size.height = previewSize.width / imageAspectRatio
+        renderRect.origin.y = (previewSize.height - renderRect.size.height) / 2
+    } else {
+        renderRect.size.width = previewSize.height * imageAspectRatio
+        renderRect.origin.x = (previewSize.width - renderRect.size.width) / 2
+    }
+    let scale = outputSize.width / renderRect.width
+
+    if settings.watermarkType == .text {
+        // (文字水印的绘制逻辑不变)
+        let scaledFontSize = settings.fontSize * scale
+        guard let scaledFont = NSFont(name: settings.fontName, size: scaledFontSize) else {
+            NSGraphicsContext.restoreGraphicsState(); return image
+        }
+        let shadow = NSShadow()
+        shadow.shadowColor = NSColor.black.withAlphaComponent(0.6)
+        shadow.shadowOffset = NSSize(width: 2 * scale, height: 2 * scale)
+        shadow.shadowBlurRadius = 4 * scale
+        let attributes: [NSAttributedString.Key: Any] = [.font: scaledFont, .foregroundColor: NSColor(settings.textColor.color).withAlphaComponent(settings.textOpacity), .shadow: shadow]
+        let watermarkString = NSAttributedString(string: settings.text, attributes: attributes)
+        let watermarkSize = watermarkString.size()
+        let drawPoint = CGPoint(x: (outputSize.width - watermarkSize.width) / 2 + settings.position.width * scale, y: (outputSize.height - watermarkSize.height) / 2 - settings.position.height * scale)
+        watermarkString.draw(at: drawPoint)
+        
+    } else if let imageData = settings.imageData, let watermarkImage = NSImage(data: imageData) {
+        // (图片水印的绘制逻辑不变, 但基于 outputSize)
+        let scaledWatermarkSize = CGSize(width: watermarkImage.size.width * settings.imageScale * scale, height: watermarkImage.size.height * settings.imageScale * scale)
+        let drawRect = CGRect(x: (outputSize.width - scaledWatermarkSize.width) / 2 + settings.position.width * scale, y: (outputSize.height - scaledWatermarkSize.height) / 2 - settings.position.height * scale, width: scaledWatermarkSize.width, height: scaledWatermarkSize.height)
+        watermarkImage.draw(in: drawRect, from: .zero, operation: .sourceOver, fraction: settings.imageOpacity)
+    }
+
+    NSGraphicsContext.restoreGraphicsState()
+    
+    // --- 4. 从新画布生成最终图片 ---
+    guard let watermarkedCGImage = context.makeImage() else { return image }
+    
+    // 返回尺寸为 outputSize 的新 NSImage
+    return NSImage(cgImage: watermarkedCGImage, size: outputSize)
+}
     
     private func getOutputFileName(for url: URL) -> String {
         let stem = url.deletingPathExtension().lastPathComponent
@@ -750,7 +822,6 @@ struct PositionGridView: View {
             }
         }
     }
-    // 文件: ContentView.swift -> PositionGridView
 private func systemName(for alignment: WatermarkAlignment) -> String {
     switch alignment {
     case .topLeft: return "arrow.up.left"
@@ -767,7 +838,6 @@ private func systemName(for alignment: WatermarkAlignment) -> String {
     // --- 新增代码结束 ---
     }
 }
-    // 文件: ContentView.swift -> PositionGridView
 private func tooltip(for alignment: WatermarkAlignment) -> String {
     switch alignment {
     case .topLeft: return "左上角"
